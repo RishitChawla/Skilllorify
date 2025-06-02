@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+
+{% block title %}Log In - CertifyMe{% endblock %}
+
+{% block content %}
+<section class="auth-section py-16">
+    <div class="container">
+        <div class="auth-container mx-auto animate-fade-in" style="max-width: 500px;">
+            <div class="card p-8">
+                <div class="text-center mb-8">
+                    <div class="auth-logo mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="text-primary">
+                            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+                        </svg>
+                    </div>
+                    <h1 class="mb-2">Welcome Back</h1>
+                    <p class="text-gray">Log in to access your certifications</p>
+                </div>
+                
+                <form id="loginForm">
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="d-flex justify-content-between align-items-center mb-2">
+                            <label for="password" class="form-label mb-0">Password</label>
+                            <a href="/forgot-password" class="text-sm">Forgot password?</a>
+                        </div>
+                        <input type="password" id="password" name="password" class="form-control" required data-min-length="8">
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="d-flex align-items-center">
+                            <input type="checkbox" id="remember" name="remember" class="mr-2">
+                            <label for="remember">Remember me</label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary w-100">Log In</button>
+                    </div>
+                </form>
+                
+                
+                
+                <div class="text-center">
+                    <p>Don't have an account? <a href="/signup" class="text-primary">Sign up</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const loginForm = document.getElementById('loginForm');
+        
+        if (loginForm) {
+            loginForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // In a real implementation, this would send the form data to the server
+                // For demo purposes, we'll just redirect to the dashboard
+                
+                // Get form data
+                const formData = new FormData(loginForm);
+                const formDataObj = {};
+                formData.forEach((value, key) => {
+                    formDataObj[key] = value;
+                });
+                
+                console.log('Login form data:', formDataObj);
+                
+                // Show loading state
+                const submitButton = loginForm.querySelector('button[type="submit"]');
+                const originalText = submitButton.textContent;
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<span class="spinner"></span> Logging in...';
+                
+                // Add spinner styles
+                if (!document.querySelector('#spinner-styles')) {
+                    const style = document.createElement('style');
+                    style.id = 'spinner-styles';
+                    style.textContent = `
+                        .spinner {
+                            display: inline-block;
+                            width: 16px;
+                            height: 16px;
+                            border: 2px solid rgba(255, 255, 255, 0.3);
+                            border-radius: 50%;
+                            border-top-color: white;
+                            animation: spin 1s ease-in-out infinite;
+                            margin-right: 8px;
+                        }
+                        
+                        @keyframes spin {
+                            to { transform: rotate(360deg); }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+                
+                // Simulate login process
+                setTimeout(() => {
+                    // Redirect to dashboard
+                    window.location.href = '/dashboard';
+                }, 2000);
+            });
+        }
+    });
+</script>
+{% endblock %}

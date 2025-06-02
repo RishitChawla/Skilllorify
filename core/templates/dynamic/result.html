@@ -1,0 +1,125 @@
+{% extends "layout.html" %}
+
+{% block title %}Test Results - {{ certification.name }}{% endblock %}
+
+{% block content %}
+<section class="cta">
+    <div class="container">
+        <h1 class="animate-slide-up" style="color: var(--lightGolden)">Your Test Results</h1>
+        <p class="animate-slide-up delay-100">{{ certification.name }} Certification</p>
+    </div>
+</section>
+
+<section class="results-summary py-8">
+    <div class="container">
+        <div class="card p-6 animate-fade-in">
+            <div class="d-flex flex-wrap">
+                {% if passed %}
+                    <div class="results-score text-center" style="flex: 1 1 300px;">
+                        <div class="score-circle mx-auto mb-4" style="width: 200px; height: 200px; border-radius: 50%; background: conic-gradient(var(--success) 0% {{ score }}%, var(--gray-light) {{ score }}% 100%); display: flex; align-items: center; justify-content: center;">
+                            <div style="width: 180px; height: 180px; border-radius: 50%; background-color: var(--white); display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                                <span style="font-size: 2rem; font-weight: 700; color: var(--success);">{{ score }}%</span>
+                                <span>Score</span>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="score-details">
+                            <div class="score-item mb-2">
+                                <span class="badge badge-success">Passed</span>
+                            </div>
+                            <p>Congratulations! You have successfully passed the {{ certification.name }} Certification test.</p>
+                        </div>
+                    </div>
+                {% else %}  
+                    <div class="results-score text-center" style="flex: 1 1 300px;">
+                        <div class="score-circle mx-auto mb-4" style="width: 200px; height: 200px; border-radius: 50%; background: conic-gradient(var(--danger) 0% {{ score }}%, var(--gray-light) {{ score }}% 100%); display: flex; align-items: center; justify-content: center;">
+                            <div style="width: 180px; height: 180px; border-radius: 50%; background-color: var(--white); display: flex; align-items: center; justify-content: center; flex-direction: column;">
+                                <span style="font-size: 2rem; font-weight: 700; color: var(--danger);">{{ score }}%</span>
+                                <span>Score</span>
+                            </div>
+                        </div>
+                        
+                        
+                        <div class="score-details">
+                            <div class="score-item mb-2">
+                                <span class="badge badge-danger">Failed</span>
+                            </div>
+                            <p>Don't worry! You didn’t pass the {{ certification.name }} Certification test this time, but you’re one step closer.</p>
+                        </div>
+                    </div>  
+                {% endif %}
+                
+                
+                <div class="results-details" style="flex: 1 1 400px; padding-left: 2rem;">
+                    <h2 class="mb-4" style="color: var(--primary);">Test Summary</h2>
+                    
+                    <div class="summary-item d-flex justify-content-between mb-2">
+                        <span>Total Questions:</span>
+                        <span>{{ total }}</span>
+                    </div>
+                    
+                    <div class="summary-item d-flex justify-content-between mb-2">
+                        <span>Correct Answers:</span>
+                        <span class="text-success">{{ correct }}</span>
+                    </div>
+                    
+                    <div class="summary-item d-flex justify-content-between mb-2">
+                        <span>Incorrect Answers:</span>
+                        <span class="text-danger">{{ incorrect }}</span>
+                    </div>
+                    
+                    {% if passed %}
+                        <div class="actions mt-6">
+                            <a id="show_form_btn" class="btn btn-primary">Get Certificate</a>
+                        </div>
+                      
+                        <div id="get_details" class="details-section hidden">
+                            <div>
+                            <form method="post" action="{% url 'submit_test' certification.slug %}">
+                                {% csrf_token %}
+                                <div class="filter-row" style="gap: var(--spacing-1);">
+                                    <label for="user_name">Name</label>
+                                    <input name="name" type="text" id="user_name" class="form-control" placeholder="John Pork" required>
+                                </div>
+
+                                <div class="filter-row" style="gap: var(--spacing-1);">
+                                    <label for="user_email">Email</label>
+                                    <input name="email" type="email" id="user_email" class="form-control" placeholder="user@example.com" required>
+                                </div>
+                                
+                                <div class="filter-row" style="gap: var(--spacing-1);">
+                                    <label for="user_phone">Phone</label>
+                                    <input name="phone" type="tel" id="user_phone" class="form-control" pattern="^\+?[0-9\s\-]{10,15}$" placeholder="+91" required>
+                                </div>
+                                
+                                <button class="btn primary-btn" name="view" style="color: var(--navyBlue);">Generate Certificate</button>
+                            </form>
+                            </div>
+                        </div>                      
+                    {% else %}
+                        <div class="actions mt-6">
+                            <a href="{% url 'certification' certification.slug %}" class="btn btn-primary">Retake the test</a>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+    document.getElementById('show_form_btn').addEventListener('click', function (e) {
+      e.preventDefault();
+      const detailsSection = document.getElementById('get_details');
+      detailsSection.classList.add('open');
+      this.style.display = 'none'; 
+    });
+</script>
+{% endblock %}

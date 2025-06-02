@@ -1,0 +1,107 @@
+{% extends "layout.html" %}
+
+{% block title %}Your Certificate - {{ certification.name }} {% endblock %}
+
+{% block content %}
+<section class="cta">
+    <div class="container">
+        <h1 class="animate-slide-up" style="color: var(--lightGolden)">Your Certificate</h1>
+        <p class="animate-slide-up delay-100">{{ certification.name }} Certification</p>
+    </div>
+</section>
+
+
+
+<section class="certificate-section py-16">
+    <div class="container">
+        <div class="certificate-container animate-fade-in">
+            
+            <a href="/static/images/certificates/{{ name }}" download>
+                <div class="certificate">
+                    <img src="/static/images/certificates/{{ name }}" alt="{{ certification }} certificate - {{ name }}" style="border-radius: 20px;">
+                </div>  
+            </a>
+                
+            </div>
+        </div>
+</section>
+
+<section class="next-steps py-8 bg-light">
+    <div class="container">
+        <h2 class="mb-6 animate-on-scroll">Next Steps</h2>
+        
+        <div class="d-flex flex-wrap">
+            <div class="next-step-card card p-6 mb-4 animate-on-scroll" style="flex: 1 1 300px; margin-right: 1rem;">
+                <div class="next-step-icon mb-4 text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                </div>
+                <h3>Share Your Achievement</h3>
+                <p class="mb-4">Share your certification on LinkedIn, Twitter, or other social platforms to showcase your skills.</p>
+                <div class="social-share">
+                    <a class="btn"
+                    href="https://www.linkedin.com/sharing/share-offsite/?url=https://http://skilllorify.com//static/images/certificates/{{ name }}" 
+                    target="_blank"
+                    >
+                    Share on LinkedIn
+                    </a>
+                    <a class="btn"
+                    href="https://twitter.com/intent/tweet?text=I just earned a certificate in {{ certification.name }}! 🏆 Check it out: http://skilllorify.com//static/images/certificates/{{ name }}" 
+                    target="_blank"
+                    >
+                    Share on Twitter
+                    </a>
+                </div>
+            </div>
+            
+            <div class="next-step-card card p-6 mb-4 animate-on-scroll" style="flex: 1 1 300px; margin-right: 1rem;">
+                <div class="next-step-icon mb-4 text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                </div>
+                <h3>Download Certificate</h3>
+                <p class="mb-4">Download your certificate as a PDF to include in your portfolio or share with employers.</p>
+                <a href="/static/images/certificates/{{ name }}" download  class="btn btn-primary">Download Certificate</a>
+            </div>
+            
+            <div class="next-step-card card p-6 mb-4 animate-on-scroll" style="flex: 1 1 300px;">
+                <div class="next-step-icon mb-4 text-primary">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                </div>
+                <h3>Continue Learning</h3>
+                <p class="mb-4">Explore advanced certifications to further enhance your skills and career prospects.</p>
+                <a href="{% url 'all_certifications' %}" class="btn btn-primary">Explore More Certifications</a>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    function copyToClipboard(elementId) {
+        const element = document.getElementById(elementId);
+        element.select();
+        document.execCommand('copy');
+        
+        // Show feedback
+        const button = element.nextElementSibling;
+        const originalText = button.textContent;
+        button.textContent = 'Copied!';
+        
+        setTimeout(() => {
+            button.textContent = originalText;
+        }, 2000);
+    }
+</script>
+{% endblock %}

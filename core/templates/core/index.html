@@ -1,0 +1,264 @@
+{% extends "layout.html" %}
+
+{% block title %}Skilllorify{% endblock %}
+
+{% block content %}
+<section class="hero" style="height: 120%;">
+    <div class="hero-content">
+        <h2 style="color: white;">No one will ever come to save you, your life is 100% your responsibility.<span class="highlight"> Then why dont you get skilled?</span></h2>
+        <p>Validate Your Skills with Recognized Certifications
+        </p>
+        <div class="hero-buttons">
+            <a id="get-started-btn" class="btn primary-btn" style="color: var(--navyBlue);">Get Started</a>
+            <a href="{% url 'all_certifications' %}" class="btn secondary-btn" >Start Learning</a>
+        </div>
+        <!-- <div class="hero-stats">
+            <div class="stat">
+                <span class="stat-number">500+</span>
+                <span class="stat-text">Certificates</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number">50k+</span>
+                <span class="stat-text">Students</span>
+            </div>
+            <div class="stat">
+                <span class="stat-number">98%</span>
+                <span class="stat-text">Success Rate</span>
+            </div>
+        </div> -->
+    </div>
+    <div class="hero-image">
+        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80" alt="hero image">
+    </div>
+    <div class="hero-wave"></div>
+</section>
+
+<!-- Popular Certificates Section -->
+<section class="py-16">
+    <div>
+        <h2 class="text-center animate-on-scroll" style="color: var(--navyBlue);">Popular Certifications</h2>
+            
+        <div class="certification-grid">
+
+            {% for curd in card %}
+                {% include "core/card.html" %}
+            {% endfor %}
+            
+            
+        </div>            
+        <div class="text-center">
+            <a href="{% url 'all_certifications' %}" class="btn primary-btn" style="color: var(--navyBlue);">View All Certifications</a>
+        </div>
+    </div>
+</section>
+    
+
+
+{% include "core/whyus.html" %}
+
+    
+<!-- Testimonials Section -->
+<section class="testimonials py-16 bg-light">
+    <div class="container">
+        <h2 class="text-center mb-10 animate-on-scroll" style="color: var(--navyBlue);">What Our Users Say</h2>
+        
+        <div class="d-flex flex-wrap justify-content-between gap-5">
+            <div class="testimonial-card card p-6 animate-on-scroll" style="flex: 1 1 300px;">
+                <p class="testimonial-text mb-4">"The certification process was smooth and professional. The knowledge I gained has been invaluable for my career growth."</p>
+                <div class="testimonial-author text-center">
+                    <h4 class="mb-1">Anaya Mittal</h4>
+                    <p class="text-gray">Web Developer</p>
+                </div>
+            </div>
+            
+            <div class="testimonial-card card p-6 animate-on-scroll" style="flex: 1 1 300px;">
+                <!-- <div class="testimonial-avatar mb-4 text-center">
+                    <img src="/static/images/avatar-2.jpg" alt="Review-Avatar-2" class="rounded-full" style="width: 80px; height: 80px; object-fit: cover;">
+                </div> -->
+                <p class="testimonial-text mb-4">"I was able to secure a promotion within weeks of earning my certification. The test was challenging but fair."</p>
+                <div class="testimonial-author text-center">
+                    <h4 class="mb-1">Vivaan Aggarwal</h4>
+                    <p class="text-gray">Data Analyst</p>
+                </div>
+            </div>
+            
+            <div class="testimonial-card card p-6 animate-on-scroll" style="flex: 1 1 300px;">
+                <p class="testimonial-text mb-4">"The certification has opened doors to new opportunities. The platform is user-friendly and the support team is excellent."</p>
+                <div class="testimonial-author text-center">
+                    <h4 class="mb-1">Aarav Chauhan</h4>
+                    <p class="text-gray">Security Specialist</p>
+                </div>
+            </div>
+
+
+            <div class="reviews-container video-reviews">
+                <div class="d-flex flex-wrap justify-content-between gap-5">
+                    <div class="video-testimonial-card card animate-on-scroll" style="flex: 1 1 350px;">
+                        <div class="video-container">
+                            <video controls>
+                                <source src="/static/videos/testimonial-1.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">
+                                <button class="play-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="5,3 19,12 5,21"></polygon>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="video-info p-4">
+                            <div class="d-flex align-items-center mb-2">
+                                <div>
+                                    <h4 class="mb-0">David Kim</h4>
+                                    <p class="text-gray mb-0">Software Engineer</p>
+                                </div>
+                            </div>
+                            <div class="rating mb-2">
+                                <span class="stars">★★★★★</span>
+                            </div>
+                            <p class="video-description">"How CertifyMe helped me transition into tech"</p>
+                        </div>
+                    </div>
+                    
+                    <div class="video-testimonial-card card animate-on-scroll" style="flex: 1 1 350px;">
+                        <div class="video-container">
+                            <video controls>
+                                <source src="/static/videos/testimonial-2.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">
+                                <button class="play-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="5,3 19,12 5,21"></polygon>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="video-info p-4">
+                            <div class="d-flex align-items-center mb-2">
+                                <div>
+                                    <h4 class="mb-0">Lisa Wang</h4>
+                                    <p class="text-gray mb-0">Data Scientist</p>
+                                </div>
+                            </div>
+                            <div class="rating mb-2">
+                                <span class="stars">★★★★★</span>
+                            </div>
+                            <p class="video-description">"My journey from beginner to certified professional"</p>
+                        </div>
+                    </div>
+                    
+                    <div class="video-testimonial-card card animate-on-scroll" style="flex: 1 1 350px;">
+                        <div class="video-container">
+                            <video controls poster="/static/images/video-thumb-3.jpg">
+                                <source src="/static/videos/testimonial-3.mp4" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                            <div class="video-overlay">
+                                <button class="play-btn">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                        <polygon points="5,3 19,12 5,21"></polygon>
+                                    </svg>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="video-info p-4">
+                            <div class="d-flex align-items-center mb-2">
+                                <div>
+                                    <h4 class="mb-0">James Miller</h4>
+                                    <p class="text-gray mb-0">Cybersecurity Analyst</p>
+                                </div>
+                            </div>
+                            <div class="rating mb-2">
+                                <span class="stars">★★★★★</span>
+                            </div>
+                            <p class="video-description">"Why I chose CertifyMe for my security certification"</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- How It Works Section -->
+<section class="how-it-works" id="how-it-works">
+    <div class="section-header centered">
+        <h2 style="color: var(--navyBlue);">How It Works</h2>
+        <p>Get certified in just four simple steps</p>
+    </div>
+    <div class="steps">
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-icon"><i class="fas fa-search"></i></div>
+            <h3>Choose a Certificate</h3>
+            <p>Browse our catalog and select a certificate that aligns with your career goals.</p>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-icon"><i class="fas fa-book-open"></i></div>
+            <h3>Give the Test</h3>
+            <p>Demonstrate your skills through a structured online assessment.</p>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-icon"><i class="fas fa-tasks"></i></div>
+            <h3>Pass the Assessment</h3>
+            <p>Secure a minimum of 50% to qualify for certification.</p>
+        </div>
+        <div class="step-connector"></div>
+        <div class="step">
+            <div class="step-number">4</div>
+            <div class="step-icon"><i class="fas fa-award"></i></div>
+            <h3>Receive Your Certificate</h3>
+            <p>Get your digital certificate and share it on LinkedIn and other platforms.</p>
+        </div>
+    </div>
+</section>
+
+
+<!-- CTA Section -->
+<section class="cta">
+    <div class="cta-content">
+        <h2 style="color: var(--lightGolden)">Ready to Advance Your Career?</h2>
+        <p>Join thousands of professionals who have transformed their careers with our industry-recognized certifications.</p>
+        <a href="{% url 'all_certifications' %}" class="btn primary-btn" style="color: var(--navyBlue);">Start Learning</a>
+
+    </div>
+</section>  
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.getElementById('get-started-btn').addEventListener('click', function (e) {
+      e.preventDefault();
+      document.getElementById('how-it-works').scrollIntoView({
+        behavior: 'smooth'
+      });
+    });
+
+    // Video play functionality
+    const playButtons = document.querySelectorAll('.play-btn');
+    playButtons.forEach(button => {
+        button.addEventListener('click', function() {
+            const video = this.closest('.video-container').querySelector('video');
+            const overlay = this.closest('.video-overlay');
+            
+            video.play();
+            overlay.style.display = 'none';
+            
+            video.addEventListener('pause', function() {
+                overlay.style.display = 'flex';
+            });
+            
+            video.addEventListener('ended', function() {
+                overlay.style.display = 'flex';
+            });
+        });
+    });
+</script>
+{% endblock %}

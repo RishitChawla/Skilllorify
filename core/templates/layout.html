@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% block meta %}
+    <!-- Basic Meta Tags -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Skilllorify Eduventure is an online certification platform where you can test your skills, take professional assessments, and earn recognized certifications.">
+    <meta name="keywords" content="Skilllorify, certification, online test, skills assessment, online learning, exams, e-learning, education, professional certification">
+    <meta name="author" content="Skilllorify Eduventure">
+    <meta name="theme-color" content="#1e3c72">
+
+    <!-- Open Graph / Facebook / LinkedIn -->
+    <meta property="og:title" content="Skilllorify Eduventure - Online Certification Platform">
+    <meta property="og:description" content="Join Skilllorify Eduventure to test your skills, take online exams, and earn recognized certificates. Empower your learning journey.">
+    <meta property="og:image" content="https://www.skilllorify.com/static/images/og-image.png">
+    <meta property="og:url" content="https://www.skilllorify.com/">
+    <meta property="og:type" content="website">
+
+    <!-- Twitter Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Skilllorify Eduventure - Online Certification Platform">
+    <meta name="twitter:description" content="Test your skills, take online exams, and get certified with Skilllorify Eduventure.">
+    <meta name="twitter:image" content="https://www.skilllorify.com/static/images/og-image.png">
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.skilllorify.com/">
+
+    {% endblock %}
+
+
+
+
+    
+    <title>{% block title %}CertifyMe - Online Certification{% endblock %}</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/static/images/favicon.ico">
+    
+    <!-- CSS -->
+    <link rel="stylesheet" href="/static/css/styles.css">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="/" class="logo">
+                    {% load static %}
+                    <img src="{% static 'images/main variation.png' %}" alt="Skilllorify Logo" style="height: 50px;">
+                </a>
+                
+                <nav class="main-nav">
+                    <button class="mobile-menu-toggle" aria-label="Toggle menu">
+                        <span></span>
+                        <span></span>
+                        <span></span>
+                    </button>
+                    
+                    <ul class="nav-list">
+                        <li><a href="/" class="nav-link">Home</a></li>
+                        <li><a href="{% url 'about' %}" class="nav-link">About Us</a></li>
+                        <li><a href="{% url 'gallery' %}" class="nav-link">Gallery</a></li>
+                        <li><a href="{% url 'blog' %}" class="nav-link">Blog</a></li>
+                        <li><a href="{% url 'all_certifications' %}" class="nav-link">Courses</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+    
+    <main>
+        {% block content %}{% endblock %}
+    </main>
+    
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <a href="/" class="logo">
+                        <img src="{% static 'images/main variation.png' %}" alt="CertifyMe Logo" style="height: 80px;">
+                    </a>
+                    <p>Empowering professionals through verified certifications.</p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-links-column">
+                        <h3>Company</h3>
+                        <ul>
+                            <li><a href="{% url 'about' %}">About Us</a></li>
+                            <li><a href="{% url 'contactus' %}">Contact Us</a></li>
+                            <li><a href="{% url 'career' %}">Career</a></li>
+                            <li><a href="{% url 'gallery' %}">Gallery</a></li>
+                            <li><a href="{% url 'blog' %}">Blog</a></li>
+                        </ul>
+                    </div>
+                    
+                    <div class="footer-links-column">
+                        <h3>Legal</h3>
+                        <ul>
+                            <li><a href="{% url 'terms' %}">Terms & Conditions</a></li>
+                            <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
+                        </ul>
+                    </div>
+                    
+                    
+                </div>
+                
+                
+            </div>
+            
+            <div class="footer-bottom">
+                <p style="color: var(--gray);">&copy; {% now "Y" %} Skilllorify. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- JavaScript -->
+    <script src="/static/js/main.js"></script>
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,131 @@
+{% extends "layout.html" %}
+
+{% block title %}Sign Up - CertifyMe{% endblock %}
+
+{% block content %}
+<section class="auth-section py-12">
+    <div class="container">
+        <div class="auth-container mx-auto animate-fade-in" style="max-width: 500px;">
+            <div class="card p-8">
+                <div class="text-center mb-6">
+                    <h1 class="mb-2">Create an Account</h1>
+                    <p class="text-gray">Join thousands of certified professionals</p>
+                </div>
+                
+                
+                
+                {% if message %}
+                    <div class="errorMessage">{{ message }}</div> 
+                {% endif %}
+                
+                <form id="signupForm" method="POST" action="{% url 'register' %}">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="name" class="form-label">Full Name</label>
+                        <input type="text" id="name" name="name" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="email" class="form-label">Email Address</label>
+                        <input type="email" id="email" name="email" class="form-control" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="phone" class="form-label">Phone</label>
+                        <input type="phone" id="phone" name="phone" class="form-control" required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="password" class="form-label">Password</label>
+                        <input type="password" id="password" name="password" class="form-control" required data-min-length="8" required>
+                        <small class="form-text">Password must be at least 8 characters long</small>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="confirm-password" class="form-label">Confirm Password</label>
+                        <input type="password" id="confirm-password" name="confirmPassword" class="form-control" required data-confirm-password required>
+                    </div>
+                    
+                    <div class="form-group">
+                        <div class="d-flex align-items-center">
+                            <input type="checkbox" id="terms" name="terms" class="mr-2" required>
+                            <label for="terms">I agree to the <a href="{% url 'terms' %}" target="_blank">Terms and Conditions</a> and <a href="{% url 'privacy' %}" target="_blank">Privacy Policy</a></label>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <button name="registerBtn" type="submit" class="btn btn-primary w-100">Create Account</button>
+                    </div>
+                </form>
+                
+                
+                
+                <div class="text-center">
+                    <p>Already have an account? <a href="{% url 'login' %}" class="text-primary">Log in</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<!-- <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const signupForm = document.getElementById('signupForm');
+        
+        if (signupForm) {
+            signupForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // In a real implementation, this would send the form data to the server
+                // For demo purposes, we'll just redirect to the email verification page
+                
+                // Get form data
+                const formData = new FormData(signupForm);
+                const formDataObj = {};
+                formData.forEach((value, key) => {
+                    formDataObj[key] = value;
+                });
+                
+                console.log('Signup form data:', formDataObj);
+                
+                // Show loading state
+                const submitButton = signupForm.querySelector('button[type="submit"]');
+                const originalText = submitButton.textContent;
+                submitButton.disabled = true;
+                submitButton.innerHTML = '<span class="spinner"></span> Creating account...';
+                
+                // Add spinner styles
+                if (!document.querySelector('#spinner-styles')) {
+                    const style = document.createElement('style');
+                    style.id = 'spinner-styles';
+                    style.textContent = `
+                        .spinner {
+                            display: inline-block;
+                            width: 16px;
+                            height: 16px;
+                            border: 2px solid rgba(255, 255, 255, 0.3);
+                            border-radius: 50%;
+                            border-top-color: white;
+                            animation: spin 1s ease-in-out infinite;
+                            margin-right: 8px;
+                        }
+                        
+                        @keyframes spin {
+                            to { transform: rotate(360deg); }
+                        }
+                    `;
+                    document.head.appendChild(style);
+                }
+                
+                // Simulate signup process
+                setTimeout(() => {
+                    // Redirect to email verification page
+                    window.location.href = '/verify-email';
+                }, 2000);
+            });
+        }
+    });
+</script> -->
+{% endblock %}

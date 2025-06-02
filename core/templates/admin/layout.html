@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Admin Dashboard - CertifyMe{% endblock %}</title>
+    <link rel="stylesheet" href="/static/css/styles.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap">
+    <style>
+        /* Admin-specific styles */
+        .admin-sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 250px;
+            height: 100vh;
+            background-color: var(--dark);
+            color: var(--white);
+            padding: var(--spacing-6) 0;
+            overflow-y: auto;
+            z-index: 100;
+            transition: transform var(--transition);
+        }
+        
+        .admin-sidebar-header {
+            padding: 0 var(--spacing-5);
+            margin-bottom: var(--spacing-6);
+        }
+        
+        .admin-logo {
+            display: flex;
+            align-items: center;
+            font-weight: 700;
+            font-size: var(--font-size-xl);
+            color: var(--white);
+        }
+        
+        .admin-logo svg {
+            margin-right: var(--spacing-2);
+        }
+        
+        .admin-nav {
+            margin-bottom: var(--spacing-6);
+        }
+        
+        .admin-nav-title {
+            padding: 0 var(--spacing-5);
+            margin-bottom: var(--spacing-2);
+            font-size: var(--font-size-xs);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--gray);
+        }
+        
+        .admin-nav-item {
+            display: flex;
+            align-items: center;
+            padding: var(--spacing-3) var(--spacing-5);
+            color: var(--gray-light);
+            transition: all var(--transition);
+            border-left: 3px solid transparent;
+        }
+        
+        .admin-nav-item:hover {
+            background-color: rgba(255, 255, 255, 0.05);
+            color: var(--white);
+        }
+        
+        .admin-nav-item.active {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: var(--white);
+            border-left-color: var(--primary);
+        }
+        
+        .admin-nav-icon {
+            margin-right: var(--spacing-3);
+        }
+        
+        .admin-content {
+            margin-left: 250px;
+            min-height: 100vh;
+            background-color: var(--light);
+        }
+        
+        .admin-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: var(--spacing-4) var(--spacing-6);
+            background-color: var(--white);
+            box-shadow: var(--shadow-sm);
+        }
+        
+        .admin-user {
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: var(--border-radius-full);
+            background-color: var(--primary);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--white);
+            font-weight: 600;
+            margin-right: var(--spacing-3);
+        }
+        
+        .admin-user-info {
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .admin-user-name {
+            font-weight: 600;
+            color: var(--dark);
+        }
+        
+        .admin-user-role {
+            font-size: var(--font-size-xs);
+            color: var(--gray);
+        }
+        
+        .admin-actions {
+            display: flex;
+            align-items: center;
+        }
+        
+        .admin-action-btn {
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--gray);
+            padding: var(--spacing-2);
+            border-radius: var(--border-radius);
+            transition: all var(--transition);
+        }
+        
+        .admin-action-btn:hover {
+            color: var(--primary);
+            background-color: rgba(99, 102, 241, 0.1);
+        }
+        
+        .admin-mobile-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            color: var(--dark);
+        }
+        
+        @media (max-width: 992px) {
+            .admin-sidebar {
+                transform: translateX(-100%);
+            }
+            
+            .admin-sidebar.active {
+                transform: translateX(0);
+            }
+            
+            .admin-content {
+                margin-left: 0;
+            }
+            
+            .admin-mobile-toggle {
+                display: block;
+            }
+        }
+    </style>
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <div class="admin-sidebar">
+        <div class="admin-sidebar-header">
+            <a href="/admin" class="admin-logo">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                    <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                </svg>
+                CertifyMe
+            </a>
+        </div>
+        
+        <div class="admin-nav">
+            <div class="admin-nav-title">Dashboard</div>
+            <a href="/admin" class="admin-nav-item">
+                <span class="admin-nav-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="3" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="3" width="7" height="7"></rect>
+                        <rect x="14" y="14" width="7" height="7"></rect>
+                        <rect x="3" y="14" width="7" height="7"></rect>
+                    </svg>
+                </span>
+                Overview
+            </a>
+            <a href="/admin/analytics" class="admin-nav-item">
+                <span class="admin-nav-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="18" y1="20" x2="18" y2="10"></line>
+                        <line x1="12" y1="20" x2="12" y2="4"></line>
+                        <line x1="6" y1="20" x2="6" y2="14"></line>
+                    </svg>
+                </span>
+                Analytics
+            </a>
+        </div>
+        
+        <div class="admin-nav">
+            <div class="admin-nav-title">Content</div>
+            <a href="/admin/certifications" class="admin-nav-item active">
+                <span class="admin-nav-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                </span>
+                Certifications
+            </a>
+            <a href="/admin/tests" class="admin-nav-item">
+                <span class="admin-nav-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                        <polyline points="14 2 14 8 20 8"></polyline>
+                        <line x1="16" y1="13" x2="8" y2="13"></line>
+                        <line x1="16" y1="17" x2="8" y2="17"></line>
+                        <polyline points="10 9 9 9 8 9"></polyline>
+                    </svg>
+                </span>
+                Tests
+            </a>
+            <a href="/admin/categories" class="admin-nav-item">
+                <span class="admin-nav-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="8" y1="6" x2="21" y2="6"></line>
+                        <line x1="8" y1="12" x2="21" y2="12"></line>
+                        <line x1="8" y1="18" x2="21" y2="18"></line>
+                        <line x1="3" y1="6" x2="3.01" y2="6"></line>
+                        <line x1="3" y1="12" x2="3.01" y2="12"></line>
+                        <line x1="3" y1="18" x2="3.01" y2="18"></line>
+                    </svg>
+                </span>
+                Categories
+            </a>
+            <a href="/admin/blog" class="admin-nav-item">
+                <span class="admin-nav-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                        <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                    </svg>
+                </span>
+                Blog
+            </a>
+        </div>
+        
+        <div class="admin-nav">
+            <div class="admin-nav-title">Users</div>
+            <a href="/admin/students" class="admin-nav-item">
+                <span class="admin-nav-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                </span>
+                Students
+            </a>
+            <a href="/admin/instructors" class="admin-nav-item">
+                <span class="admin-nav-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="12" cy="7" r="4"></circle>
+                    </svg>
+                </span>
+                Instructors
+            </a>
+            <a href="/admin/admins" class="admin-nav-item">
+                <span class="admin-nav-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                </span>
+                Administrators
+            </a>
+        </div>
+        
+        <div class="admin-nav">
+            <div class="admin-nav-title">Settings</div>
+            <a href="/admin/settings" class="admin-nav-item">
+                <span class="admin-nav-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="3"></circle>
+                        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+                    </svg>
+                </span>
+                General
+            </a>
+            <a href="/admin/appearance" class="admin-nav-item">
+                <span class="admin-nav-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <circle cx="12" cy="12" r="4"></circle>
+                        <line x1="21.17" y1="8" x2="12" y2="8"></line>
+                        <line x1="3.95" y1="6.06" x2="8.54" y2="14"></line>
+                        <line x1="10.88" y1="21.94" x2="15.46" y2="14"></line>
+                    </svg>
+                </span>
+                Appearance
+            </a>
+            <a href="/admin/integrations" class="admin-nav-item">
+                <span class="admin-nav-icon">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="16 18 22 12 16 6"></polyline>
+                        <polyline points="8 6 2 12 8 18"></polyline>
+                    </svg>
+                </span>
+                Integrations
+            </a>
+        </div>
+    </div>
+    
+    <div class="admin-content">
+        <div class="admin-topbar">
+            <button class="admin-mobile-toggle" id="sidebar-toggle">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="3" y1="12" x2="21" y2="12"></line>
+                    <line x1="3" y1="6" x2="21" y2="6"></line>
+                    <line x1="3" y1="18" x2="21" y2="18"></line>
+                </svg>
+            </button>
+            
+            <div class="admin-actions">
+                <button class="admin-action-btn" title="Notifications">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                </button>
+                <button class="admin-action-btn" title="Help">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path>
+                        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="admin-user">
+                <div class="admin-user-avatar">A</div>
+                <div class="admin-user-info">
+                    <div class="admin-user-name">Admin User</div>
+                    <div class="admin-user-role">Administrator</div>
+                </div>
+            </div>
+        </div>
+        
+        <main>
+            {% block content %}{% endblock %}
+        </main>
+    </div>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Mobile sidebar toggle
+            const sidebarToggle = document.getElementById('sidebar-toggle');
+            const sidebar = document.querySelector('.admin-sidebar');
+            
+            if (sidebarToggle && sidebar) {
+                sidebarToggle.addEventListener('click', function() {
+                    sidebar.classList.toggle('active');
+                });
+                
+                // Close sidebar when clicking outside on mobile
+                document.addEventListener('click', function(event) {
+                    const isMobile = window.innerWidth < 992;
+                    if (isMobile && sidebar.classList.contains('active') && 
+                        !event.target.closest('.admin-sidebar') && 
+                        !event.target.closest('#sidebar-toggle')) {
+                        sidebar.classList.remove('active');
+                    }
+                });
+            }
+        });
+    </script>
+    
+    {% block extra_js %}{% endblock %}
+</body>
+</html>

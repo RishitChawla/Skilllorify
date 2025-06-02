@@ -1,0 +1,93 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ blog.topic }} - Skilllorify Blog{% endblock %}
+
+
+{% block content %}
+<div class="blog-content-page">
+    <!-- Reading Progress Bar -->
+    <div class="reading-progress">
+        <div class="reading-progress-bar" id="reading-progress"></div>
+    </div>
+
+    
+    <!-- Blog Header -->
+    <section class="cta">
+        <div class="container">
+            <div class="blog-meta animate-slide-up">
+                <span class="badge badge-secondary">{{ blog.category }}</span>
+                <div class="reading-time">
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                        <circle cx="12" cy="12" r="10"/>
+                        <polyline points="12,6 12,12 16,14"/>
+                    </svg>
+                    {{ blog.length }} min read
+                </div>
+                <span>{{ blog.created_at|date }}</span>
+            </div>
+            <h1 class="animate-slide-up delay-100" style="color: var(--lightGolden);">{{ blog.topic }}</h1>
+            <p class="animate-slide-up delay-200" style="font-size: var(--font-size-lg); opacity: 0.9; margin-top: var(--spacing-4);">
+                {{ blog.bio }}
+            </p>
+            <div class="author-info animate-slide-up delay-300">
+                <div>
+                    <div style="margin-bottom: var(--spacing-1);">By <strong>{{ blog.author }}</strong></div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Main Content -->
+    <div class="blog-content-container">
+        <!-- Table of Contents -->
+        <aside>
+          
+        </aside>
+        
+        <!-- Main Article Content -->
+        <main class="blog-main-content animate-fade-in">
+            <img src="{{ blog.poster.url }}" alt="Professional certification success" class="featured-image">
+            
+            <div class="blog-content">
+                {{ content|safe }}
+            </div>
+            
+            
+        </main>
+        
+        <!-- Sidebar -->
+        <aside class="blog-sidebar">
+            
+            
+        </aside>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Reading Progress Bar
+        const progressBar = document.getElementById('reading-progress');
+        const content = document.querySelector('.blog-main-content');
+        
+        function updateReadingProgress() {
+            const contentHeight = content.offsetHeight;
+            const windowHeight = window.innerHeight;
+            const scrollTop = window.pageYOffset;
+            const contentTop = content.offsetTop;
+            
+            const scrolled = Math.max(0, scrollTop - contentTop);
+            const maxScroll = Math.max(0, contentHeight - windowHeight);
+            const progress = Math.min(100, (scrolled / maxScroll) * 100);
+            
+            progressBar.style.width = progress + '%';
+        }
+        
+        window.addEventListener('scroll', updateReadingProgress);
+        updateReadingProgress();
+        
+        
+    });
+</script>
+{% endblock %}

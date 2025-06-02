@@ -1,0 +1,169 @@
+{% extends "layout.html" %}
+
+{% block title %}Blogs - Skilllorify{% endblock %}
+
+{% block content %}
+<section class="cta">
+    <div class="container">
+        <h1 class="animate-slide-up" style="color: var(--lightGolden);">Skilllorify Blog</h1>
+        <p class="animate-slide-up delay-100">Insights, tips, and resources for certification and professional development</p>
+    </div>
+</section>
+
+<section class="blog-featured py-12">
+    <div class="container">
+        <div class="featured-post card animate-fade-in">
+            {% for blog in blogs %}
+
+                {% if blog.isFeatured %}
+                    <div class="d-flex flex-wrap">
+                        <div class="featured-image" style="flex: 1 1 500px;">
+                            <img src="{{ blog.poster.url }}" alt="Featured blog post" class="rounded-lg" style="width: 100%; height: 100%; object-fit: cover;">
+                        </div>
+                        <div class="featured-content p-8" style="flex: 1 1 500px;">
+                            <div class="post-meta mb-2">
+                                <span class="badge badge-primary">{{ blog.category }}</span>
+                                <span class="text-gray ml-2">{{ blog.created_at|date }}</span>
+                                <span class="badge badge-featured">Featured</span>
+                            </div>
+                            <h2 class="mb-4" style="color: var(--navyBlue);">{{ blog.topic }}</h2>
+                            <p class="mb-4">{{ blog.bio }}</p>
+                            <div class="post-author d-flex align-items-center mb-6">
+                                <span>By <strong>Sarah Johnson</strong></span>
+                            </div>
+                                <a href="{% url 'blogPost' blog.slug %}" class="btn btn-primary">Read Article</a>
+                        </div>
+                    </div>
+                {% endif %}
+        </div>
+    </div>
+</section>
+
+<section class="blog-content py-12 bg-light">
+    <div class="container">
+        <div class="d-flex flex-wrap">
+            <div class="blog-main" style="flex: 1 1 700px; margin-right: 2rem;">
+                <div class="blog-posts">
+                        <div class="blog-post card p-0 mb-8 animate-on-scroll">
+                            <div class="d-flex flex-wrap">
+                                <div class="post-image" style="flex: 0 0 500px;">
+                                    <img src="{{ blog.poster.url }}" alt="Blog post" class="rounded-lg" style="width: 100%; height: 100%; object-fit: cover;">
+                                </div>
+                                
+                                <div class="post-content p-6" style="flex: 1 1 300px;">
+                                    <div class="post-meta mb-2">
+                                        <span class="badge badge-secondary">{{ blog.category }}</span>
+                                        <span class="text-gray ml-2">{{ blog.created_at|date }}</span>
+                                    </div>
+                                    <h3 class="mb-3" style="color: var(--navyBlue);">{{ blog.topic }}</h3>
+                                    <p class="blog-bio">{{ blog.bio }}</p>
+                                    <div class="post-author d-flex align-items-center mb-6">
+                                        <span style="color: var(--dark);">By <strong>{{ blog.author }}</strong></span>
+                                    </div>
+                                    <a href="{% url 'blogPost' blog.slug %}" class="btn btn-primary">Read More</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    {% endfor %}
+                    
+                    
+                </div>
+                
+                <!-- Pagination -->
+                <div class="pagination-container">
+                    <div class="pagination animate-on-scroll">
+                        {% if blogs.has_previous %}
+                            <a href="?page={{ blogs.previous_page_number }}" class="pagination-link">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="15 18 9 12 15 6"></polyline>
+                                </svg>
+                            </a>
+                        {% endif %}
+                        <span class="pagination-page">Page {{ blogs.number }} of {{ blogs.paginator.num_pages }}</span>  
+                        {% if blogs.has_next %}
+                            <a href="?page={{ blogs.next_page_number }}" class="pagination-link">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <polyline points="9 18 15 12 9 6"></polyline>
+                                </svg>
+                            </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+    </div>
+</section>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Newsletter form submission
+        const newsletterForm = document.querySelector('.newsletter-form form');
+        
+        if (newsletterForm) {
+            newsletterForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get email value
+                const emailInput = this.querySelector('input[type="email"]');
+                const email = emailInput.value;
+                
+                console.log('Newsletter subscription:', email);
+                
+                // Show success message
+                const formContainer = this.parentNode;
+                
+                // Create success message
+                const successMessage = document.createElement('div');
+                successMessage.className = 'alert alert-success animate-fade-in mt-4';
+                successMessage.innerHTML = 'Thank you for subscribing to our newsletter!';
+                
+                // Replace form with success message
+                formContainer.innerHTML = '';
+                formContainer.appendChild(successMessage);
+            });
+        }
+        
+        // Sidebar subscribe form
+        const sidebarSubscribeForm = document.querySelector('.subscribe-form');
+        
+        if (sidebarSubscribeForm) {
+            sidebarSubscribeForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                // Get email value
+                const emailInput = this.querySelector('input[type="email"]');
+                const email = emailInput.value;
+                
+                console.log('Sidebar subscription:', email);
+                
+                // Show success message
+                const successMessage = document.createElement('div');
+                successMessage.className = 'alert alert-success animate-fade-in mt-4';
+                successMessage.innerHTML = 'Thank you for subscribing!';
+                
+                // Insert success message after form
+                this.parentNode.insertBefore(successMessage, this.nextSibling);
+                
+                // Reset form
+                this.reset();
+                
+                // Remove success message after 5 seconds
+                setTimeout(() => {
+                    successMessage.style.opacity = '0';
+                    setTimeout(() => {
+                        if (successMessage.parentNode) {
+                            successMessage.parentNode.removeChild(successMessage);
+                        }
+                    }, 300);
+                }, 5000);
+            });
+        }
+    });
+</script>
+{% endblock %}

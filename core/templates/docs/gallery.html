@@ -1,0 +1,150 @@
+{% extends "layout.html" %}
+
+{% block title %}Gallery - Skilllorify{% endblock %}
+
+{% block content %}
+<section class="cta">
+    <div class="container">
+        <div class="text-center">
+            <h1 class="animate-slide-up mb-4" style="color: var(--lightGolden);">Gallery</h1>
+            <p class="animate-slide-up delay-100">Explore our certification journey through images</p>
+        </div>
+    </div>
+</section>
+
+<section class="gallery-grid py-16">
+    <div class="container">
+        <div class="gallery-container">
+            {% for photo in gallery %}
+                <div class="gallery-item animate-on-scroll" data-category="events">
+                    <div class="gallery-image">
+                        {% if photo.file.url %}
+                            {% if ".mp4" in photo.file.url or ".webm" in photo.file.url or ".mkv" in photo.file.url %}
+                                <video  controls>
+                                    <source src="{{ photo.file.url }}" type="video/mp4">
+                                    Your browser does not support the video tag.
+                                </video>
+                            {% elif ".jpg" in photo.file.url or ".png" in photo.file.url or ".jpeg" in photo.file.url or ".webp" in photo.file.url %}
+                                <img src="{{ photo.file.url }}" alt="{{ photo.title }} image" loading="lazy"/>
+                            {% endif %}
+                        {% endif %}
+                        <div class="gallery-overlay">
+                            <div class="gallery-info">
+                                <h3 style="color: var(--lightGolden);">{{ photo.topic }}</h3>
+                                <p style="color: aliceblue;">{{ photo.bio }}</p>
+                            </div>
+                            <button class="gallery-zoom" onclick="openLightbox('{{ photo.file.url }}', '{{ photo.topic }}')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <path d="M21 21l-4.35-4.35"></path>
+                                    <path d="M11 8v6"></path>
+                                    <path d="M8 11h6"></path>
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- Lightbox Modal -->
+<div id="lightbox" class="lightbox">
+    <div class="lightbox-content">
+        <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+        
+        <!-- Video Element -->
+        <video id="lightbox-video" width="100%" height="700vh" controls style="display: none;">
+            <source id="lightbox-video-source" src="" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        
+        <!-- Image Element -->
+        <img id="lightbox-image" src="" alt="" style="display: none;">
+        
+        <div class="lightbox-caption">
+            <h3 style="color: var(--lightGolden);" id="lightbox-title"></h3>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const filterButtons = document.querySelectorAll('.filter-btn');
+    const galleryItems = document.querySelectorAll('.gallery-item');
+
+    filterButtons.forEach(button => {
+        button.addEventListener('click', function () {
+            const filter = this.getAttribute('data-filter');
+            filterButtons.forEach(btn => btn.classList.remove('active'));
+            this.classList.add('active');
+
+            galleryItems.forEach(item => {
+                const category = item.getAttribute('data-category');
+                if (filter === 'all' || category === filter) {
+                    item.classList.remove('hidden');
+                    item.style.display = 'block';
+                } else {
+                    item.classList.add('hidden');
+                    item.style.display = 'none';
+                }
+            });
+        });
+    });
+});
+
+function openLightbox(mediaSrc, title) {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightbox-image');
+    const lightboxVideo = document.getElementById('lightbox-video');
+    const lightboxVideoSource = document.getElementById('lightbox-video-source');
+    const lightboxTitle = document.getElementById('lightbox-title');
+
+    const isVideo = mediaSrc.endsWith(".mp4") || mediaSrc.endsWith(".webm") || mediaSrc.endsWith(".mkv");
+
+    if (isVideo) {
+        lightboxVideo.style.display = "block";
+        lightboxImage.style.display = "none";
+        lightboxVideoSource.src = mediaSrc;
+        lightboxVideo.load();
+    } else {
+        lightboxImage.style.display = "block";
+        lightboxVideo.style.display = "none";
+        lightboxImage.src = mediaSrc;
+    }
+
+    lightboxTitle.textContent = title;
+    lightbox.style.display = "block";
+    document.body.style.overflow = "hidden";
+}
+
+function closeLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightbox-image');
+    const lightboxVideo = document.getElementById('lightbox-video');
+
+    lightbox.style.display = 'none';
+    document.body.style.overflow = 'auto';
+
+    lightboxImage.src = '';
+    lightboxVideo.pause();
+    lightboxVideo.currentTime = 0;
+    lightboxVideo.querySelector('source').src = '';
+}
+
+document.getElementById('lightbox').addEventListener('click', function (e) {
+    if (e.target === this) {
+        closeLightbox();
+    }
+});
+
+document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+        closeLightbox();
+    }
+});
+</script>
+{% endblock %}

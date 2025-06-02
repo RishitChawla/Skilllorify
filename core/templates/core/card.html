@@ -1,0 +1,57 @@
+<a href="{% url 'certification' curd.slug %}">            
+    <div class="card certification-card animate-on-scroll">
+        <img src="{{ curd.poster.url }}" alt="{{ curd.name }} certificate" class="certification-image">
+        <div class="card-body certification-body p-6">
+            <div class="certification-meta">
+                <span class="badge badge-{{ curd.difficulty.lower }}" style="color: white;">{{ curd.difficulty }}</span>                                    
+            </div>
+            <h3 class="card-title">{{ curd.name }}</h3>
+            <p class="card-text">{{ curd.bio }}</p>
+
+
+            <div class="certification-stats">
+                <div class="certification-stat">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <polyline points="12 6 12 12 16 14"></polyline>
+                    </svg>
+                    <span>{{ curd.duration }}</span>
+                </div>
+                <!-- <div class="certification-stat">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    <span>5,280 students</span>
+                </div> -->
+                <div class="certification-stat">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon>
+                    </svg>
+                    <span>{{ curd.rating }}</span>
+                </div>
+            </div>
+            
+            
+            
+            <div class="certification-price">
+                {% if curd.discountedPrice %}
+                    {% if curd.discountedPrice == 0 %}
+                        <span class="price-value" id="discountedPrice">FREE</span>
+                    {% else %}
+                        <span class="price-value" id="discountedPrice">₹ {{ curd.discountedPrice }}</span>
+                    {% endif %}
+                    <span class="price-original" id="actualPrice">₹ {{ curd.price }}</span>                                 
+                {% else %}
+                    {% if curd.price == 0 %}
+                        <span class="price-value">FREE</span>
+                    {% else %}
+                        <span class="price-value">₹ {{ curd.price }}</span>
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</a>

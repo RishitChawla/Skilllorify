@@ -1,0 +1,73 @@
+{% extends "layout.html" %}
+
+{% block title %}{{ questions.first.certification.name }} - Test{% endblock %}
+
+
+{% block content %}
+<section class="test-header shadow-md">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center">
+            <h3 style="color: var(--navyBlue);">{{ questions.first.certification.name }} Certification</h3>
+        </div>
+        
+    </div>
+</section>
+
+<section class="test-content py-10">
+    <div class="container">
+        <form class="test-form" method="POST" action="{% url 'submit_test' questions.first.certification.slug %}">
+            {% csrf_token %}
+            {% for question in questions %}
+                <div class="question-card card p-8 animate-fade-in">
+                    <div class="question-header mb-6">
+                        <h3 class="d-flex align-items-center"><span class="question-number">{{ question.id }}</span>{{ question.question }}</h3>
+                    </div>
+                    
+                    <div class="options-list">
+                        <div class="option-item mb-3">
+                            <label for="q{{ question.id }}-optionA" class="option-label">
+                                <input type="radio" name="question-{{ question.id }}" id="q{{ question.id }}-optionA" class="option-input" value="A" required>
+                                <span>{{ question.option_a }}</span>
+                            </label>
+                        </div>
+                        
+                        <div class="option-item mb-3">
+                            <label for="q{{ question.id }}-optionB" class="option-label">
+                                <input type="radio" name="question-{{ question.id }}" id="q{{ question.id }}-optionB" class="option-input" value="B" required>
+                                <span>{{ question.option_b }}</span>
+                            </label>
+                        </div>
+                        
+                        <div class="option-item mb-3">
+                            <label for="q{{ question.id }}-optionC" class="option-label">
+                                <input type="radio" name="question-{{ question.id }}" id="q{{ question.id }}-optionC" class="option-input" value="C" required>
+                                <span>{{ question.option_c }}</span>
+                            </label>
+                        </div>
+                        
+                        <div class="option-item">
+                            <label for="q{{ question.id }}-optionD" class="option-label">
+                                <input type="radio" name="question-{{ question.id }}" id="q{{ question.id }}-optionD" class="option-input" value="D" required>
+                                <span>{{ question.option_d }}</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+            
+            
+            
+            <div class="test-footer">
+                <div class="d-flex justify-content-between align-items-center">
+                    <button type="submit" name="submit" class="btn btn-secondary">Submit Test</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+    {% load static %}
+    <script src="{% static 'test.js' %}"></script>
+{% endblock %}
