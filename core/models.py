@@ -91,8 +91,8 @@ class Certificate(models.Model):
 
 
 class Gallery(models.Model):
-    topic = models.CharField(max_length=124)
-    bio = models.CharField(max_length=255)
+    topic = models.CharField(max_length=124, null=True, blank=True)
+    bio = models.CharField(max_length=255, null=True, blank=True)
     file = models.FileField(upload_to='videos/', null=True, blank=True)
     uploaded_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
 
@@ -114,3 +114,24 @@ class Blog(models.Model):
         super().save(*args, **kwargs)
 
     created_at = models.DateTimeField(auto_now_add=True)
+
+
+
+
+
+
+import os
+
+def save_to_static(instance, filename):
+
+    return os.path.join('images', filename)
+
+
+class Save(models.Model):
+
+    image = models.ImageField(max_length=500, upload_to=save_to_static)
+
+
+
+class SaveInfo(models.Model):
+    image = models.ImageField(max_length=500, upload_to="images/save")

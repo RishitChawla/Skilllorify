@@ -1,128 +1,277 @@
 <!DOCTYPE html>
+
 <html lang="en">
+
 <head>
+
     {% block meta %}
+
     <!-- Basic Meta Tags -->
+
     <meta charset="UTF-8">
+
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <meta name="description" content="Skilllorify Eduventure is an online certification platform where you can test your skills, take professional assessments, and earn recognized certifications.">
+
     <meta name="keywords" content="Skilllorify, certification, online test, skills assessment, online learning, exams, e-learning, education, professional certification">
+
     <meta name="author" content="Skilllorify Eduventure">
+
     <meta name="theme-color" content="#1e3c72">
 
+
     <!-- Open Graph / Facebook / LinkedIn -->
+
     <meta property="og:title" content="Skilllorify Eduventure - Online Certification Platform">
+
     <meta property="og:description" content="Join Skilllorify Eduventure to test your skills, take online exams, and earn recognized certificates. Empower your learning journey.">
+
     <meta property="og:image" content="https://www.skilllorify.com/static/images/og-image.png">
+
     <meta property="og:url" content="https://www.skilllorify.com/">
+
     <meta property="og:type" content="website">
 
+
     <!-- Twitter Meta Tags -->
+
     <meta name="twitter:card" content="summary_large_image">
+
     <meta name="twitter:title" content="Skilllorify Eduventure - Online Certification Platform">
+
     <meta name="twitter:description" content="Test your skills, take online exams, and get certified with Skilllorify Eduventure.">
+
     <meta name="twitter:image" content="https://www.skilllorify.com/static/images/og-image.png">
 
+
     <!-- Canonical URL -->
+
     <link rel="canonical" href="https://www.skilllorify.com/">
+
 
     {% endblock %}
 
 
 
 
+
     
+
     <title>{% block title %}CertifyMe - Online Certification{% endblock %}</title>
+
     
+
     <!-- Favicon -->
+
     <link rel="icon" href="/static/images/favicon.ico">
+
     
+
     <!-- CSS -->
+
     <link rel="stylesheet" href="/static/css/styles.css">
+
     
+
     <!-- Google Fonts -->
+
     <link rel="preconnect" href="https://fonts.googleapis.com">
+
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
     
+
     {% block extra_css %}{% endblock %}
+
 </head>
+
 <body>
+
     <header class="header">
+
         <div class="container">
+
             <div class="header-content">
+
                 <a href="/" class="logo">
+
                     {% load static %}
+
                     <img src="{% static 'images/main variation.png' %}" alt="Skilllorify Logo" style="height: 50px;">
+
                 </a>
+
                 
+
                 <nav class="main-nav">
+
                     <button class="mobile-menu-toggle" aria-label="Toggle menu">
+
                         <span></span>
+
                         <span></span>
+
                         <span></span>
+
                     </button>
+
                     
+
                     <ul class="nav-list">
+
                         <li><a href="/" class="nav-link">Home</a></li>
+
                         <li><a href="{% url 'about' %}" class="nav-link">About Us</a></li>
+
                         <li><a href="{% url 'gallery' %}" class="nav-link">Gallery</a></li>
+
                         <li><a href="{% url 'blog' %}" class="nav-link">Blog</a></li>
+
                         <li><a href="{% url 'all_certifications' %}" class="nav-link">Courses</a></li>
+
                     </ul>
+
                 </nav>
+
             </div>
+
         </div>
+
     </header>
+
     
+
     <main>
+
         {% block content %}{% endblock %}
-    </main>
-    
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <a href="/" class="logo">
-                        <img src="{% static 'images/main variation.png' %}" alt="CertifyMe Logo" style="height: 80px;">
-                    </a>
-                    <p>Empowering professionals through verified certifications.</p>
-                </div>
-                
-                <div class="footer-links">
-                    <div class="footer-links-column">
-                        <h3>Company</h3>
-                        <ul>
-                            <li><a href="{% url 'about' %}">About Us</a></li>
-                            <li><a href="{% url 'contactus' %}">Contact Us</a></li>
-                            <li><a href="{% url 'career' %}">Career</a></li>
-                            <li><a href="{% url 'gallery' %}">Gallery</a></li>
-                            <li><a href="{% url 'blog' %}">Blog</a></li>
-                        </ul>
-                    </div>
-                    
-                    <div class="footer-links-column">
-                        <h3>Legal</h3>
-                        <ul>
-                            <li><a href="{% url 'terms' %}">Terms & Conditions</a></li>
-                            <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
-                        </ul>
-                    </div>
-                    
-                    
-                </div>
-                
-                
-            </div>
+
+
+        <!-- Share buttons -->
+
+        <div class="share-sticky">
+
+            <a href="https://api.whatsapp.com/send?phone=+91-8353971356&text=Hello,+I+am+interested+in+your+services.+Please+call+me+back.&type=phone_number&app_absent=0" class="share-button share-whatsapp" title="Share on Whatsapp" target="_blank">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-whatsapp" viewBox="0 0 16 16">
+
+                    <path d="M13.601 2.326A7.85 7.85 0 0 0 7.994 0C3.627 0 .068 3.558.064 7.926c0 1.399.366 2.76 1.057 3.965L0 16l4.204-1.102a7.9 7.9 0 0 0 3.79.965h.004c4.368 0 7.926-3.558 7.93-7.93A7.9 7.9 0 0 0 13.6 2.326zM7.994 14.521a6.6 6.6 0 0 1-3.356-.92l-.24-.144-2.494.654.666-2.433-.156-.251a6.56 6.56 0 0 1-1.007-3.505c0-3.626 2.957-6.584 6.591-6.584a6.56 6.56 0 0 1 4.66 1.931 6.56 6.56 0 0 1 1.928 4.66c-.004 3.639-2.961 6.592-6.592 6.592m3.615-4.934c-.197-.099-1.17-.578-1.353-.646-.182-.065-.315-.099-.445.099-.133.197-.513.646-.627.775-.114.133-.232.148-.43.05-.197-.1-.836-.308-1.592-.985-.59-.525-.985-1.175-1.103-1.372-.114-.198-.011-.304.088-.403.087-.088.197-.232.296-.346.1-.114.133-.198.198-.33.065-.134.034-.248-.015-.347-.05-.099-.445-1.076-.612-1.47-.16-.389-.323-.335-.445-.34-.114-.007-.247-.007-.38-.007a.73.73 0 0 0-.529.247c-.182.198-.691.677-.691 1.654s.71 1.916.81 2.049c.098.133 1.394 2.132 3.383 2.992.47.205.84.326 1.129.418.475.152.904.129 1.246.08.38-.058 1.171-.48 1.338-.943.164-.464.164-.86.114-.943-.049-.084-.182-.133-.38-.232"/>
+
+                </svg>
+
+            </a>
+
+            <a href="tel:8353971356" class="share-button share-phone" title="Share on Phone" target="_blank">
+
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone" viewBox="0 0 16 16">
+
+                    <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.6 17.6 0 0 0 4.168 6.608 17.6 17.6 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.68.68 0 0 0-.58-.122l-2.19.547a1.75 1.75 0 0 1-1.657-.459L5.482 8.062a1.75 1.75 0 0 1-.46-1.657l.548-2.19a.68.68 0 0 0-.122-.58zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.68.68 0 0 0 .178.643l2.457 2.457a.68.68 0 0 0 .644.178l2.189-.547a1.75 1.75 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.6 18.6 0 0 1-7.01-4.42 18.6 18.6 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877z"/>
+
+                </svg>
+
+            </a>
+
             
-            <div class="footer-bottom">
-                <p style="color: var(--gray);">&copy; {% now "Y" %} Skilllorify. All rights reserved.</p>
-            </div>
+
         </div>
-    </footer>
+
+    </main>
+
     
+
+    <footer class="footer">
+
+        <div class="container">
+
+            <div class="footer-content">
+
+                <div class="footer-brand">
+
+                    <a href="/" class="logo">
+
+                        <img src="{% static 'images/main variation.png' %}" alt="CertifyMe Logo" style="height: 80px;">
+
+                    </a>
+
+                    <p>Empowering professionals through verified certifications.</p>
+
+                </div>
+
+                
+
+                <div class="footer-links">
+
+                    <div class="footer-links-column">
+
+                        <h3>Company</h3>
+
+                        <ul>
+
+                            <li><a href="{% url 'about' %}">About Us</a></li>
+
+                            <li><a href="{% url 'contactus' %}">Contact Us</a></li>
+
+                            <li><a href="{% url 'career' %}">Career</a></li>
+
+                            <li><a href="{% url 'gallery' %}">Gallery</a></li>
+
+                            <li><a href="{% url 'blog' %}">Blog</a></li>
+
+                        </ul>
+
+                    </div>
+
+                    
+
+                    <div class="footer-links-column">
+
+                        <h3>Legal</h3>
+
+                        <ul>
+
+                            <li><a href="{% url 'terms' %}">Terms & Conditions</a></li>
+
+                            <li><a href="{% url 'privacy' %}">Privacy Policy</a></li>
+
+                        </ul>
+
+                    </div>
+
+                    
+
+                    
+
+                </div>
+
+                
+
+                
+
+            </div>
+
+            
+
+            <div class="footer-bottom">
+
+                <p style="color: var(--gray);">&copy; {% now "Y" %} Skilllorify. All rights reserved.</p>
+
+            </div>
+
+        </div>
+
+    </footer>
+
+    
+
     <!-- JavaScript -->
+
     <script src="/static/js/main.js"></script>
+
     {% block extra_js %}{% endblock %}
+
 </body>
+
 </html>
+
