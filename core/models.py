@@ -25,6 +25,8 @@ class Certification(models.Model):
     bio = models.CharField(max_length=100, default="")
     price = models.IntegerField(default=0)
     discountedPrice = models.IntegerField(blank=True, null=True)
+    content = models.TextField(null=True, blank=True)
+    image_zip = models.FileField(upload_to='zipped_images/', null=True, blank=True, max_length=1000) 
     difficulty = models.CharField(
         max_length=20,
         choices=[('Beginner', 'Beginner'), ('Intermediate', 'Intermediate'), ('Advanced', 'Advanced'), ('Expert', 'Expert')],
@@ -61,8 +63,8 @@ class TestQuestions(models.Model):
     question = models.TextField()
     option_a = models.CharField(max_length=255)
     option_b = models.CharField(max_length=255)
-    option_c = models.CharField(max_length=255)
-    option_d = models.CharField(max_length=255)
+    option_c = models.CharField(max_length=255, null=True, blank=True)
+    option_d = models.CharField(max_length=255, null=True, blank=True)
     correct_option = models.CharField(
         max_length=1,
         choices=[('A', 'A'), ('B', 'B'), ('C', 'C'), ('D', 'D')],

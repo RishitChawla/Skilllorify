@@ -1,5 +1,5 @@
-from django.shortcuts import render
-from django.http import HttpResponse, HttpResponseRedirect
+from django.shortcuts import render, redirect
+from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
 from django.db import IntegrityError
@@ -13,6 +13,15 @@ import hashlib
 from datetime import datetime
 from markdown2 import Markdown
 from .models import Certification, TestQuestions, TestAttempt, Reviews, Certificate, Gallery, Blog
+from natsort import natsorted
+
+
+import os
+from pdf2image import convert_from_path
+from django.conf import settings
+
+import logging
+logger = logging.getLogger(__name__)
 
 
 # Create your views here.
@@ -122,27 +131,66 @@ def all_certifications(request):
 def edit(request):
     return render(request, "admin/edit.html")
 
+
+import glob
 def certification(request, cert_slug):
     details = get_object_or_404(Certification, slug=cert_slug)
     reviews = Reviews.objects.filter(certification=details)
     more = Certification.objects.order_by('?')[:3]
     questions = TestQuestions.objects.filter(certification=details)
 
+    
+
     if request.method == "POST":
         if "enrollBtn" in request.POST:
             if details.price <= 0 or details.discountedPrice <= 0:
-                
-                return render(request, "dynamic/test.html", {
-                    "questions": questions,
-                })
+                request.session[f'allow_certification_{cert_slug}'] = True
+                return redirect(reverse('content', kwargs={'cert_slug': cert_slug}))
+
             else:
                 return HttpResponse("Razorpay Portal")
+        
+        if "takeTestBtn" in request.POST:
+            return render(request, "dynamic/test.html", {
+                "questions": questions,
+            })
 
     return render(request, "dynamic/certification.html", {
-        "more": more,
         "course": details,
-        "reviews": reviews
-     })
+        "reviews": reviews,
+        "more": more,
+    })
+
+
+
+def content(request, cert_slug):
+    access_key = f'allow_certification_{cert_slug}'
+
+    if not request.session.get(access_key, False):
+        return HttpResponseForbidden("🚫 You can't access this page directly.")
+
+    details = get_object_or_404(Certification, slug=cert_slug)
+
+    image_dir = os.path.join(settings.MEDIA_ROOT, 'pdf_images', cert_slug)
+    image_files = natsorted(
+        glob.glob(os.path.join(image_dir, '*.png')) +
+        glob.glob(os.path.join(image_dir, '*.jpeg')) +
+        glob.glob(os.path.join(image_dir, '*.jpg'))
+    )
+
+    image_urls = [
+        f'/media/pdf_images/{cert_slug}/{os.path.basename(img)}'
+        for img in image_files
+    ]
+
+    paginator = Paginator(image_urls, 1)
+    page_number = request.GET.get('page', 1)
+    page_obj = paginator.get_page(page_number)
+
+    return render(request, "dynamic/content.html", {
+        "course": details,
+        "page_obj": page_obj,
+    })
 
 
 def test(request, cert_slug, test_uuid):
@@ -154,7 +202,7 @@ def test(request, cert_slug, test_uuid):
     return render(request, "dynamic/test.html", {
         "course": details,
     })
-    
+
 
 def submit_test(request, cert_slug):
     certification = get_object_or_404(Certification, slug=cert_slug)
@@ -205,14 +253,27 @@ def submit_test(request, cert_slug):
                 
 
                 # (0, 93, 173)
-                template = cv2.imread(rf'C:\django\certificate\certificate\core\static\images\template\2.png')
-                cv2.putText(template, name, (500, 980), cv2.FONT_HERSHEY_COMPLEX, 2, (30, 60, 114), 3, cv2.LINE_AA)
-                cv2.putText(template, certification.name, (520, 1210), cv2.FONT_HERSHEY_COMPLEX, 1.2, (30, 60, 114), 3, cv2.LINE_AA)
-                cv2.putText(template, time.strftime("%d"), (660, 1310), cv2.FONT_HERSHEY_COMPLEX, 1.2, (30, 60, 114), 3, cv2.LINE_AA)
-                cv2.putText(template, time.strftime("%m"), (740, 1310), cv2.FONT_HERSHEY_COMPLEX, 1.2, (30, 60, 114), 3, cv2.LINE_AA)
-                cv2.putText(template, str(time.year), (820, 1310), cv2.FONT_HERSHEY_COMPLEX, 1.2, (30, 60, 114), 3, cv2.LINE_AA)
-                cv2.putText(template, unique_id, (405, 1700), cv2.FONT_HERSHEY_COMPLEX, 0.5, (30, 60, 114), 1, cv2.LINE_AA)
-                cv2.imwrite(rf'C:\django\certificate\certificate\core\static\images\certificates\{name}-{certification.name}.jpg', template)
+                template_path = rf"/home/ubuntu/Skilllorify/core/static/images/template/2Certificate.png"
+                logger.info("📂 Reading template from:", template_path)
+
+                template = cv2.imread(template_path)
+
+                # 🛑 DEBUG CHECK
+                if template is None:
+                    logger.error("❌ ERROR: Could not read template image!")
+                else:
+                    logger.info("✅ Image read successfully!")
+
+
+                #template = cv2.imread(rf"/home/ubuntu/Skilllorify/core/static/images/template/2.png")
+                #print("Reading template from:", rf"/home/ubuntu/Skilllorify/core/static/images/template/2.png")
+                cv2.putText(template, name, (760, 1830), cv2.FONT_HERSHEY_COMPLEX, 4, (30, 60, 114), 10, cv2.LINE_AA)
+                cv2.putText(template, certification.name, (530, 2240), cv2.FONT_HERSHEY_COMPLEX, 1.6, (30, 60, 114), 5, cv2.LINE_AA)
+                cv2.putText(template, time.strftime("%d"), (1160, 2410), cv2.FONT_HERSHEY_COMPLEX, 2, (30, 60, 114), 7, cv2.LINE_AA)
+                cv2.putText(template, time.strftime("%m"), (1300, 2410), cv2.FONT_HERSHEY_COMPLEX, 2, (30, 60, 114), 7, cv2.LINE_AA)
+                cv2.putText(template, str(time.year), (1445, 2410), cv2.FONT_HERSHEY_COMPLEX, 2, (30, 60, 114), 7, cv2.LINE_AA)
+                cv2.putText(template, unique_id, (700, 2950), cv2.FONT_HERSHEY_COMPLEX, 1, (30, 60, 114), 3, cv2.LINE_AA)
+                cv2.imwrite(rf'/home/ubuntu/Skilllorify/media/images/certificates/{name}-{certification.name}.jpg', template)
                 return render(request, "dynamic/certificate.html", {
                     "certification": certification,
                     "name": f"{name}-{certification.name}.jpg",

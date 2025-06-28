@@ -28,6 +28,7 @@ urlpatterns = [
     # Certification
     path('all-certifications/', views.all_certifications, name="all_certifications"),
     path('certification/<slug:cert_slug>/', views.certification, name='certification'),
+    path('certification/<slug:cert_slug>/course-content/', views.content, name='content'),
     path('test-result/<slug:cert_slug>', views.submit_test, name="submit_test"),
     path('certification/<slug:cert_slug>/test/<uuid:test_uuid>/', views.test, name='test'),
     path('certification/<slug:cert_slug>/certificate/<uuid:test_uuid>', views.certificate, name='certificate'),

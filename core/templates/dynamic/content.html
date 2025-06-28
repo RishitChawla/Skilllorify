@@ -1,0 +1,180 @@
+{% extends "layout.html" %}
+
+{% block title %}Course Content - {{ course.name }}{% endblock %}
+
+{% block content %}
+
+<div class="reading-progress">
+    <div class="reading-progress-bar" id="reading-progress"></div>
+</div>
+
+<input id="currentPage" type="hidden"  value="{{ page_obj.number }}">
+<input id="totalPage" type="hidden"  value="{{ page_obj.paginator.num_pages }}">
+
+<section class="results-summary py-8">
+    <div style="display: flex; justify-content: center;">
+        <div class="card py-2 px-1 animate-fade-in" style="width: 70%;">
+            <div style="display: flex; justify-content: center; align-items: center; gap: 10px;">
+
+                <div class="sideButton">
+                    {% if page_obj.has_previous %}
+                        <a href="?page={{ page_obj.previous_page_number }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                        </a>
+                    {% endif %}
+                </div>
+
+                <div>
+                    {% if page_obj.object_list %}
+                        <div class="content-wrapper">
+
+                            <div class="content-background">
+                                <img src="{{ page_obj.object_list.0 }}" alt="content-Image"/>
+                            </div>
+
+                            <button class="content-foreground" onclick="openLightbox('{{ page_obj.object_list.0 }}')">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                    <circle cx="11" cy="11" r="8"></circle>
+                                    <path d="M21 21l-4.35-4.35"></path>
+                                    <path d="M11 8v6"></path>
+                                    <path d="M8 11h6"></path>
+                                </svg>
+                            </button>
+
+                        </div>
+                    {% else %}
+                        <p>No content available for this course.</p>
+                    {% endif %}
+                </div>
+
+                <div class="sideButton">
+                    {% if page_obj.has_next %}
+                        <a href="?page={{ page_obj.next_page_number }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </a>
+                    {% else %}
+                        <a href="" id="testBtn" style="color: rgb(113, 113, 113);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Page number -->
+            <div style="display: flex; justify-content: center; margin-top: 15px;">
+                {% if page_obj.has_previous %}
+                    <div class="belowButton">
+                        <a href="?page={{ page_obj.previous_page_number }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="15 18 9 12 15 6"></polyline>
+                            </svg>
+                        </a>
+                    </div>
+                {% endif %}
+                {% if page_obj.has_next %}
+                    <div>
+                        Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                    </div>
+                    <div class="belowButton">
+                        <a href="?page={{ page_obj.next_page_number }}">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <polyline points="9 18 15 12 9 6"></polyline>
+                            </svg>
+                        </a>
+                    </div>
+                {% else %}
+                    <div id="testSection" style="display: flex; align-items: center; gap: 10px;">
+                            <a href="?page=1" class="btn retake-btn w-50">Revisit Content</a>
+                            Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}
+                            <form method="post" action="{% url 'certification' course.slug  %}">
+                                {% csrf_token %}
+                                <button type="submit" name="takeTestBtn" class="btn btn-primary w-50" style="display: block; padding: 1.15rem 2.5rem;">Take Test</button>
+                            </form>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+
+    </div>
+
+    
+</section>
+<!-- Lightbox model -->
+<div id="lightbox" class="content-lightbox" >
+
+    <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
+    <img id="lightbox-img" src="" alt="" class="img-lightbox">
+
+</div>
+
+
+
+{% endblock %}
+
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Reading Progress Bar
+        const progressBar = document.getElementById('reading-progress');
+        const currentPage = parseInt(document.getElementById('currentPage').value);
+        const totalPage = parseInt(document.getElementById('totalPage').value);
+  
+        const progress = (currentPage / totalPage) * 100;
+        progressBar.style.width = progress + '%';
+    
+
+        document.getElementById('testBtn').addEventListener('click', function (e) {
+        e.preventDefault();
+        document.getElementById('testSection').scrollIntoView({
+            behavior: 'smooth'
+        });
+        });
+
+    });
+
+
+    // Lightbox
+    function openLightbox(mediaSrc) {
+
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById("lightbox-img")
+
+    lightboxImage.style.display = "block";
+    lightboxImage.src = mediaSrc;
+
+    lightbox.style.display = "flex";
+    document.body.style.overflow = "hidden";
+    }
+
+    function closeLightbox() {
+    const lightbox = document.getElementById('lightbox');
+    const lightboxImage = document.getElementById('lightbox-img');
+
+    lightbox.style.display = 'none';
+    document.body.style.overflow = 'auto';
+
+    lightboxImage.src = '';
+    }
+
+    document.getElementById('lightbox').addEventListener('click', function (e) {
+    if (e.target === this) {
+        closeLightbox();
+    }
+    });
+
+    document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+        closeLightbox();
+    }
+    });
+</script>
+{% endblock %}
+
+

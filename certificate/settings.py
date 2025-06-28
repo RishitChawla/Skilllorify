@@ -26,7 +26,7 @@ SECRET_KEY = 'django-insecure-^iopl-b5_-#wpt7n+tmz=rof9-yu0tzx9&rf@xicw73x8ctk1j
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['skilllorify.com', 'www.skilllorify.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['skilllorify.com', 'www.skilllorify.com', 'localhost', '127.0.0.1', '52.66.204.249']
 
 APPEND_SLASH = True
 

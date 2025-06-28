@@ -20,7 +20,7 @@
             {% for question in questions %}
                 <div class="question-card card p-8 animate-fade-in">
                     <div class="question-header mb-6">
-                        <h3 class="d-flex align-items-center"><span class="question-number">{{ question.id }}</span>{{ question.question }}</h3>
+                        <h3 class="d-flex align-items-center"><span class="question-number">{{ forloop.counter }}</span>{{ question.question }}</h3>
                     </div>
                     
                     <div class="options-list">
@@ -38,19 +38,23 @@
                             </label>
                         </div>
                         
-                        <div class="option-item mb-3">
-                            <label for="q{{ question.id }}-optionC" class="option-label">
-                                <input type="radio" name="question-{{ question.id }}" id="q{{ question.id }}-optionC" class="option-input" value="C" required>
-                                <span>{{ question.option_c }}</span>
-                            </label>
-                        </div>
-                        
-                        <div class="option-item">
-                            <label for="q{{ question.id }}-optionD" class="option-label">
-                                <input type="radio" name="question-{{ question.id }}" id="q{{ question.id }}-optionD" class="option-input" value="D" required>
-                                <span>{{ question.option_d }}</span>
-                            </label>
-                        </div>
+                        {% if question.option_c %}
+                            <div class="option-item mb-3">
+                                <label for="q{{ question.id }}-optionC" class="option-label">
+                                    <input type="radio" name="question-{{ question.id }}" id="q{{ question.id }}-optionC" class="option-input" value="C" required>
+                                    <span>{{ question.option_c }}</span>
+                                </label>
+                            </div>
+                            
+                            {% if question.option_d %}
+                                <div class="option-item">
+                                    <label for="q{{ question.id }}-optionD" class="option-label">
+                                        <input type="radio" name="question-{{ question.id }}" id="q{{ question.id }}-optionD" class="option-input" value="D" required>
+                                        <span>{{ question.option_d }}</span>
+                                    </label>
+                                </div>
+                            {% endif %}
+                        {% endif %}
                     </div>
                 </div>
             {% endfor %}
